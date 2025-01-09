@@ -36,9 +36,14 @@ jobs:
           terraform_version: 1.10.4
           terraform_wrapper: false
 
+      - name: Generate code
+        id: generate
+        run: terramate generate
+
       - name: Run Terraform init on all stacks
         id: init
         run: terramate run -- terraform init
+
 
       - name: Run drift detection
         id: drift
