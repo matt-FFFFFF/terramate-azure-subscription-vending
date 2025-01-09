@@ -1,0 +1,54 @@
+name: Scheduled Terraform Drift Detection
+
+on:
+  schedule:
+    - cron: '0 2 * * *'
+  workflow_dispatch:
+
+jobs:
+  drift-detection:
+    name: Check Drift
+
+    permissions:
+      id-token: write
+      contents: read
+      pull-requests: read
+      checks: read
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          ref: ${{ github.head_ref }}
+          fetch-depth: 0
+
+      - name: Create plugin cache dir
+        run: mkdir .terraform-cache-dir
+
+      - name: Install Terramate
+        uses: terramate-io/terramate-action@b5d1461d435ba454179045ea062bbecb32738913 # v2.0.0
+
+      - name: Install Terraform
+        uses: hashicorp/setup-terraform@b9cd54a3c349d3f38e8881555d616ced269862dd # v3.1.2
+        with:
+          terraform_version: 1.10.4
+          terraform_wrapper: false
+
+      - name: Run Terraform init on all stacks
+        id: init
+        run: terramate run -- terraform init
+
+      - name: Run drift detection
+        id: drift
+        run: |
+          terramate run \
+          --sync-drift-status \
+          --terraform-plan-file=drift.tfplan \
+          --continue-on-error \
+          --parallel 5 \
+          -- \
+          terraform plan -out drift.tfplan -detailed-exitcode -lock=false
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
