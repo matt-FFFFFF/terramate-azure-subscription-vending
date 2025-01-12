@@ -4,9 +4,7 @@ script "init" {
 
   job {
     commands = [
-      ["terraform", "init", "-lock-timeout=5m", {
-        tags = global.bootstrap.enabled ? "bootstrap" : null
-      }],
+      ["terraform", "init", "-lock-timeout=5m"],
     ]
   }
 }
@@ -51,7 +49,6 @@ script "deploy" {
       ["terraform", "apply", "-input=false", "-auto-approve", "-lock-timeout=5m", "out.tfplan", {
         sync_deployment     = true
         terraform_plan_file = "out.tfplan"
-        tags               = global.bootstrap.enabled ? "bootstrap" : null
       }],
     ]
   }
