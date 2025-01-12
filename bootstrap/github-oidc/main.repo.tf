@@ -9,6 +9,8 @@ resource "github_repository" "this" {
   allow_merge_commit          = false
   squash_merge_commit_message = "PR_BODY"
   squash_merge_commit_title   = "PR_TITLE"
+  merge_commit_title          = "MERGE_MESSAGE"
+  merge_commit_message        = "PR_TITLE"
 }
 
 resource "github_repository_environment" "prod" {
