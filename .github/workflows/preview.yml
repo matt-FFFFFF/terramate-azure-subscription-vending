@@ -50,7 +50,7 @@ jobs:
 
       - name: List changed stacks
         id: list-changed
-        run: terramate list -C stacks --changed
+        run: terramate list --changed
 
       ### Configure cloud credentials
 
@@ -59,31 +59,24 @@ jobs:
 
       - name: Generate code
         id: generate
-        run: terramate generate -C stacks --changed
+        run: terramate generate --changed
 
       - name: Run Terraform init in all changed stacks
         if: steps.list-changed.outputs.stdout
         run: |
-          terramate script run \
-            -C stacks \
+          terramate script run init \
             --changed \
             --parallel 1 \
-            init
         env:
-          GITHUB_TOKEN: ${{ secrets.GH_PAT }}
           ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
           ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
 
       - name: Plan Terraform changes in changed stacks
         if: steps.list-changed.outputs.stdout
         run: |
-          terramate script run \
-            -C stacks \
+          terramate script run preview \
             --changed \
-            --parallel 5 \
-            --continue-on-error \
-            -- \
-            preview
+            --parallel 5
         env:
           GITHUB_TOKEN: ${{ secrets.GH_PAT }}
           ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}

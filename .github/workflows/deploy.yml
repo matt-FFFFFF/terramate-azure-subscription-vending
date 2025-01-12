@@ -1,0 +1,69 @@
+name: Terraform Deployment
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    name: Deploy Terraform changes in changed Terramate stacks
+
+    environment: prod
+
+    permissions:
+      id-token: write
+      contents: read
+      pull-requests: read
+      checks: read
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          fetch-depth: 0
+
+      - name: Install Terramate
+        uses: terramate-io/terramate-action@b5d1461d435ba454179045ea062bbecb32738913 # v2.0.0
+
+      - name: Install Terraform
+        uses: hashicorp/setup-terraform@b9cd54a3c349d3f38e8881555d616ced269862dd # v3.1.2
+        with:
+          terraform_version: 1.10.4
+          terraform_wrapper: false
+
+      - name: List changed stacks
+        id: list
+        run: terramate list --changed
+
+      - name: Run Terraform init in each changed stacks
+        if: steps.list.outputs.stdout
+        id: init
+        run: |
+          terramate script run init --changed
+        env:
+          ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
+          ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
+
+      - name: Apply changes on changed stacks
+        if: steps.list.outputs.stdout
+        id: apply
+        run: |
+          terramate script run deploy --changed
+        env:
+          ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
+          ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
+          GITHUB_TOKEN: ${{ secrets.GH_PAT }}
+
+      - name: Run drift detection
+        if: steps.list.outputs.stdout && ! cancelled() && steps.apply.outcome != 'skipped'
+        id: drift
+        run: |
+          terramate script rundrift detect --changed
+        env:
+          ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
+          ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
+          GITHUB_TOKEN: ${{ secrets.GH_PAT }}
