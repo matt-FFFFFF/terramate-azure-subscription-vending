@@ -37,7 +37,7 @@ resource "azapi_resource" "role_assignment_umi_stg" {
   body = {
     properties = {
       principalId      = azapi_resource.umi.output.properties.principalId
-      roleDefinitionId = provider::azapi::subscription_resource_id(data.azapi_client_config.current.subscription_id, "Microsoft.Authorization/roleDefinitions", ["b7e6dc6d-f1e8-4753-8033-0f276bb0955b"]) # Storage Blob Data Owner
+      roleDefinitionId = provider::azapi::subscription_resource_id(var.subscription_id, "Microsoft.Authorization/roleDefinitions", ["b7e6dc6d-f1e8-4753-8033-0f276bb0955b"]) # Storage Blob Data Owner
       principalType    = "ServicePrincipal"
     }
   }
