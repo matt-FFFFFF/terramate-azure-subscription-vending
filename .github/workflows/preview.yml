@@ -57,6 +57,10 @@ jobs:
 
       ### Run the Terraform preview via Terramate in each changed stack
 
+      - name: Generate code
+        id: generate
+        run: terramate generate -C stacks --changed
+
       - name: Run Terraform init in all changed stacks
         if: steps.list-changed.outputs.stdout
         run: |
