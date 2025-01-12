@@ -20,7 +20,7 @@ resource "azapi_resource" "umi_federated_credential" {
     properties = {
       audiences = ["api://AzureADTokenExchange"]
       issuer    = "https://token.actions.githubusercontent.com"
-      subject   = "repo:matt-FFFFFF/tm-test:environment:prod" # TODO: fix this when adding GH provider
+      subject   = "repo:matt-FFFFFF/${var.repository_name}:environment:prod" # TODO: fix this when adding GH provider
     }
   }
 }
