@@ -9,6 +9,13 @@ globals "terraform" "providers" "azapi" {
   version = "~> 2.2"
 }
 
+globals "terraform" {
+  platforms = [
+    "linux_amd64",
+    "macos_arm64"
+  ]
+}
+
 globals "terraform" "backend" "azurerm" {
   resource_group_name  = "rg-${global.pseudo_random_name}"
   storage_account_name = "stg${global.pseudo_random_name}"

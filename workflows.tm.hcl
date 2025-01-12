@@ -1,10 +1,10 @@
-script "init-no-backend" {
-  name        = "Terraform Init No Backend"
+script "providers-lock" {
+  name        = "Generate provider lock file"
   description = "Use this to generate the provider lock file"
 
   job {
-    commands = [
-      ["terraform", "init", "-backend=false", ],
+    commands = [ for platform in global.terraform.platforms :
+      ["terraform", "providers", "lock", "-platform=${platform}"]
     ]
   }
 }
