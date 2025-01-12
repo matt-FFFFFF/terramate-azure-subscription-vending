@@ -1,11 +1,6 @@
-resource "random_id" "umi" {
-  byte_length = 6
-  prefix      = "umi-"
-}
-
 resource "azapi_resource" "umi" {
   type      = "Microsoft.ManagedIdentity/userAssignedIdentities@2023-07-31-preview"
-  name      = random_id.umi.hex
+  name      = "umi-${local.pseudo_random_resource_suffix}"
   parent_id = azapi_resource.rg.id
   location  = azapi_resource.rg.location
   body      = {}
@@ -19,7 +14,7 @@ resource "azapi_resource" "umi" {
 resource "azapi_resource" "umi_federated_credential" {
   type      = "Microsoft.ManagedIdentity/userAssignedIdentities/federatedIdentityCredentials@2023-07-31-preview"
   parent_id = azapi_resource.umi.id
-  name      = "github-oidc"
+  name      = "github-oidc-env-prod"
   locks     = [azapi_resource.umi.id]
   body = {
     properties = {

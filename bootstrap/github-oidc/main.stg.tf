@@ -1,11 +1,6 @@
-resource "random_id" "stg" {
-  byte_length = 6
-  prefix      = "stg"
-}
-
 resource "azapi_resource" "stg" {
   type      = "Microsoft.Storage/storageAccounts@2023-05-01"
-  name      = random_id.stg.hex
+  name      = "stg${local.pseudo_random_resource_suffix}"
   parent_id = azapi_resource.rg.id
   location  = azapi_resource.rg.location
   body = {
