@@ -5,8 +5,8 @@ globals "terraform" {
 globals "terraform" "providers" "azapi" {
   enabled = true
 
-  source   = "azure/azapi"
-  version  = "~> 2.2"
+  source  = "azure/azapi"
+  version = "~> 2.2"
 }
 
 globals "terraform" "backend" "azurerm" {
@@ -15,7 +15,7 @@ globals "terraform" "backend" "azurerm" {
   container_name       = "tfstate"
 }
 
-globals "github"{
+globals "github" {
   repository_name = "terramate-azure-subscription-vending"
   organization    = "matt-FFFFFF"
 }

@@ -4,7 +4,7 @@ script "init-no-backend" {
 
   job {
     commands = [
-      ["terraform", "init", "-backend=false",],
+      ["terraform", "init", "-backend=false", ],
     ]
   }
 }
@@ -15,7 +15,7 @@ script "init" {
 
   job {
     commands = [
-      ["terraform", "init", "-lock-timeout=5m",],
+      ["terraform", "init", "-lock-timeout=5m", ],
     ]
   }
 }
@@ -26,7 +26,7 @@ script "init-migrate" {
 
   job {
     commands = [
-      ["terraform", "init", "-migrate-state",],
+      ["terraform", "init", "-migrate-state", ],
     ]
   }
 }
