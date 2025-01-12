@@ -47,7 +47,7 @@ jobs:
         if: steps.list.outputs.stdout
         id: init
         run: |
-          terramate script run init --changed
+          terramate script run --changed --parallel=1 -- init
         env:
           ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
           ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
@@ -56,7 +56,7 @@ jobs:
         if: steps.list.outputs.stdout
         id: apply
         run: |
-          terramate script run deploy --changed
+          terramate script run --changed --parallel=5 -- deploy
         env:
           ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
           ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
@@ -66,7 +66,7 @@ jobs:
         if: steps.list.outputs.stdout && ! cancelled() && steps.apply.outcome != 'skipped'
         id: drift
         run: |
-          terramate script rundrift detect --changed
+          terramate script run --changed --parallel=5 -- drift detect
         env:
           ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
           ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
