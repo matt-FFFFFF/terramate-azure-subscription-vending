@@ -31,3 +31,12 @@ variable "location" {
   description = "The location of the resources to create."
   nullable    = false
 }
+
+variable "bootstrap_current_user_has_storage_data_plane_access" {
+  type        = bool
+  description = <<DESCRIPTION
+Whether the current user has access to the storage account data plane.
+This is used to migrate the terraform state to the new storage account.
+DESCRIPTION
+  nullable    = false
+}
