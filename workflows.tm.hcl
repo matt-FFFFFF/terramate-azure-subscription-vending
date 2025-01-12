@@ -103,15 +103,3 @@ script "drift" "reconcile" {
     ]
   }
 }
-
-script "github" "add-remote" {
-  name       = "Add GitHub Remote and force push"
-  description = "Add a remote to the GitHub repository"
-
-  job {
-    commands = [
-      ["git", "remote", "add", "origin", "https://github.com/${global.github.organization}/${global.github.repository_name}.git"],
-      ["git", "push", "-f", "origin", "HEAD:main"],
-    ]
-  }
-}
