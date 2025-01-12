@@ -9,6 +9,28 @@ script "init-no-backend" {
   }
 }
 
+script "init" {
+  name        = "Terraform Init"
+  description = "Download the required provider plugins and modules and set up the backend"
+
+  job {
+    commands = [
+      ["terraform", "init", "-lock-timeout=5m",],
+    ]
+  }
+}
+
+script "init-migrate" {
+  name        = "Terraform Init Migrate State"
+  description = "used for bootstrapping, migrate state from local to the storage account"
+
+  job {
+    commands = [
+      ["terraform", "init", "-migrate-state",],
+    ]
+  }
+}
+
 script "preview" {
   name        = "Terraform Deployment Preview"
   description = "Create a preview of Terraform changes and synchronize it to Terramate Cloud"
