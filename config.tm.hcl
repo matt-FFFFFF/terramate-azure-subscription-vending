@@ -16,5 +16,5 @@ globals "terraform" "backend" "azurerm" {
 }
 
 globals "github"{
-  repository_name = "tm-test"
+  repository_name = "terramate-azure-subscription-vending"
 }
