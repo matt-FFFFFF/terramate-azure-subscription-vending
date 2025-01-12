@@ -82,9 +82,9 @@ script "drift" "detect" {
 
   job {
     commands = [
-      ["terraform", "plan", "-out", "out.tfplan", "-detailed-exitcode", "-lock=false", {
+      ["terraform", "plan", "-out", "drift.tfplan", "-detailed-exitcode", "-lock=false", {
         sync_drift_status   = !global.bootstrap.enabled
-        terraform_plan_file = "out.tfplan"
+        terraform_plan_file = "drift.tfplan"
       }],
     ]
   }
