@@ -12,7 +12,7 @@ globals "terraform" "providers" "azapi" {
 globals "terraform" {
   platforms = [
     "linux_amd64",
-    "macos_arm64"
+    "darwin_arm64"
   ]
 }
 
