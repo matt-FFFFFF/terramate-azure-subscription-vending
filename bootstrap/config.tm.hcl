@@ -3,4 +3,7 @@ globals "terraform" "providers" "github" {
 
   source   = "integrations/github"
   version  = "~> 6.4"
+  config = {
+    owner = global.github.organization
+  }
 }
