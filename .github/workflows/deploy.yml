@@ -39,6 +39,10 @@ jobs:
         id: list
         run: terramate list --changed
 
+      - name: Generate code
+        id: generate
+        run: terramate generate
+
       - name: Run Terraform init in each changed stacks
         if: steps.list.outputs.stdout
         id: init
