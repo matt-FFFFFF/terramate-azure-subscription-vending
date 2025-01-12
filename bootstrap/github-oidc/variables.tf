@@ -21,8 +21,8 @@ variable "tenant_id" {
   nullable    = false
 
   validation {
-    error_message = "The tenaant id must be a valid lowercase GUID"
-    condition     = can(regex("^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$", var.subscription_id))
+    error_message = "The tenant id must be a valid lowercase GUID"
+    condition     = can(regex("^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$", var.tenant_id))
   }
 }
 
