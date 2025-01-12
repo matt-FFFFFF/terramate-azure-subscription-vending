@@ -2,6 +2,10 @@ terramate {
   required_version = "~> 0.11"
 
   config {
+    git {
+      default_branch = "main"
+      default_remote = "origin"
+    }
     cloud {
       organization = "matt-FFFFFF"
     }
