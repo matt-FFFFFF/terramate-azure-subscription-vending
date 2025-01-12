@@ -1,0 +1,82 @@
+name: Terraform Preview
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  preview:
+    name: Plan Terraform changes in changed stacks
+    runs-on: ubuntu-latest
+
+    environment: prod
+
+    permissions:
+      id-token: write
+      contents: read
+      pull-requests: write
+      checks: read
+
+    steps:
+      ### Check out the code
+
+      - name: Checkout
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          ref: ${{ github.head_ref }}
+          fetch-depth: 0
+
+      ### Install tooling
+
+      - name: Install Terramate
+        uses: terramate-io/terramate-action@b5d1461d435ba454179045ea062bbecb32738913 # v2.0.0
+
+      - name: Install Terraform
+        uses: hashicorp/setup-terraform@b9cd54a3c349d3f38e8881555d616ced269862dd # v3.1.2
+        with:
+          terraform_version: 1.10.4
+          terraform_wrapper: false
+
+      ### Linting
+
+      - name: Check Terramate formatting
+        run: terramate fmt --check
+
+      - name: Check Terraform formatting
+        run: terraform fmt -recursive -check -diff
+
+      ### Check for changed stacks
+
+      - name: List changed stacks
+        id: list-changed
+        run: terramate list -C stacks --changed
+
+      ### Configure cloud credentials
+
+
+      ### Run the Terraform preview via Terramate in each changed stack
+
+      - name: Run Terraform init in all changed stacks
+        if: steps.list-changed.outputs.stdout
+        run: |
+          terramate script run \
+            -C stacks \
+            --changed \
+            --parallel 1 \
+            init
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+
+      - name: Plan Terraform changes in changed stacks
+        if: steps.list-changed.outputs.stdout
+        run: |
+          terramate script run \
+            -C stacks \
+            --changed \
+            --parallel 5 \
+            --continue-on-error \
+            -- \
+            preview
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_PAT }}
