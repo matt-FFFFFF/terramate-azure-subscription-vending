@@ -45,8 +45,9 @@ jobs:
       - name: Run Terraform init on all stacks
         id: init
         run: terramate script run \
-          init \
-          --parallel 1
+          --parallel 1 \
+          -- \
+          init
         env:
           ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
           ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
@@ -58,9 +59,10 @@ jobs:
         id: drift
         run: |
           terramate script run \
-            drift detect \
-            --parallel 5 \
-            --continue-on-error
+          --parallel 5 \
+          --continue-on-error \
+          -- \
+          drift detect
         env:
           GITHUB_TOKEN: ${{ secrets.GH_PAT }}
           ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
@@ -70,11 +72,12 @@ jobs:
         id: drift-reconcile
         run: |
           terramate script run \
-            drift reconcile \
             --tags reconcile \
             --status=drifted \
             --parallel 5 \
-            --continue-on-error
+            --continue-on-error \
+            -- \
+            drift reconcile
         env:
           GITHUB_TOKEN: ${{ secrets.GH_PAT }}
           ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
