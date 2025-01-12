@@ -7,7 +7,6 @@ resource "github_repository" "this" {
   has_projects                = true
   vulnerability_alerts        = true
   allow_merge_commit          = false
-  merge_commit_message        = "PR_TITLE"
   squash_merge_commit_message = "PR_BODY"
   squash_merge_commit_title   = "PR_TITLE"
 }
