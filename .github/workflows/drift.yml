@@ -46,7 +46,6 @@ jobs:
         id: init
         run: terramate script run \
           --parallel 1 \
-          -- \
           init
         env:
           ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
@@ -61,7 +60,6 @@ jobs:
           terramate script run \
             --parallel 5 \
             --continue-on-error \
-            -- \
             drift detect
         env:
           GITHUB_TOKEN: ${{ secrets.GH_PAT }}
@@ -76,7 +74,6 @@ jobs:
             --status=drifted \
             --parallel 5 \
             --continue-on-error \
-            -- \
             drift reconcile
         env:
           GITHUB_TOKEN: ${{ secrets.GH_PAT }}
