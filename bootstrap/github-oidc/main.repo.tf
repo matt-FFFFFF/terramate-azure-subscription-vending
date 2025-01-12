@@ -11,6 +11,7 @@ resource "github_repository" "this" {
   squash_merge_commit_title   = "PR_TITLE"
   merge_commit_title          = "MERGE_MESSAGE"
   merge_commit_message        = "PR_TITLE"
+  delete_branch_on_merge      = true
 }
 
 resource "github_repository_environment" "prod" {
