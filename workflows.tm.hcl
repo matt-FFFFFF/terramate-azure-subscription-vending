@@ -1,10 +1,10 @@
-script "init" {
-  name        = "Terraform Init"
-  description = "Download the required provider plugins and modules and set up the backend"
+script "init-no-backend" {
+  name        = "Terraform Init No Backend"
+  description = "Use this to generate the provider lock file"
 
   job {
     commands = [
-      ["terraform", "init", "-lock-timeout=5m"],
+      ["terraform", "init", "-backend=false",],
     ]
   }
 }
