@@ -49,6 +49,8 @@ jobs:
           ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
           ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
 
+      - name: Git status
+        run: git status -sb
 
       - name: Run drift detection
         id: drift
