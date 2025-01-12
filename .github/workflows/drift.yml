@@ -9,7 +9,11 @@ jobs:
   drift-detection:
     name: Check Drift
 
-    permissions: write-all
+    permissions:
+      id-token: write
+      contents: read
+      pull-requests: read
+      checks: read
 
     runs-on: ubuntu-latest
 
@@ -59,6 +63,6 @@ jobs:
           -- \
           terraform plan -out drift.tfplan -detailed-exitcode -lock=false
         env:
-          GITHUB_TOKEN: ${{ github.token }}
+          GITHUB_TOKEN: ${{ secrets.GH_PAT }}
           ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
           ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
