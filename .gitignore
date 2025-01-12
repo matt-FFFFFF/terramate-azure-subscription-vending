@@ -38,4 +38,11 @@ override.tf.json
 terraform.rc
 
 # Ignore the terraform plugin cache directory
-.terraform-cache-dir
+.terraform-cache-dir/**
+!.terraform-cache-dir/.gitkeep
+
+# Ignore generated files
+_terramate_generated_*.tf
+_terramate_generated_*.tf.json
+_terramate_generated_*.tfvars
+_terramate_generated_*.tfvars.json
