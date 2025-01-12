@@ -45,6 +45,9 @@ jobs:
       - name: Run Terraform init on all stacks
         id: init
         run: terramate run -- terraform init
+        env:
+          ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
+          ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
 
 
       - name: Run drift detection
