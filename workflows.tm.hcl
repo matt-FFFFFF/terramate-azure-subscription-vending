@@ -17,7 +17,7 @@ script "preview" {
     commands = [
       ["terraform", "validate"],
       ["terraform", "plan", "-out", "out.tfplan", "-detailed-exitcode", "-lock=false", {
-        sync_preview        = true
+        sync_preview        = global.bootstrap.enabled ? false : true
         terraform_plan_file = "out.tfplan"
       }],
     ]
@@ -47,7 +47,7 @@ script "deploy" {
       ["terraform", "validate"],
       ["terraform", "plan", "-out", "out.tfplan", "-lock=false"],
       ["terraform", "apply", "-input=false", "-auto-approve", "-lock-timeout=5m", "out.tfplan", {
-        sync_deployment     = true
+        sync_deployment     = global.bootstrap.enabled ? false : true
         terraform_plan_file = "out.tfplan"
       }],
     ]
@@ -61,7 +61,7 @@ script "drift" "detect" {
   job {
     commands = [
       ["terraform", "plan", "-out", "out.tfplan", "-detailed-exitcode", "-lock=false", {
-        sync_drift_status   = true
+        sync_drift_status   = global.bootstrap.enabled ? false : true
         terraform_plan_file = "out.tfplan"
       }],
     ]
@@ -75,7 +75,7 @@ script "drift" "reconcile" {
   job {
     commands = [
       ["terraform", "apply", "-input=false", "-auto-approve", "-lock-timeout=5m", "drift.tfplan", {
-        sync_deployment     = true
+        sync_deployment     = global.bootstrap.enabled ? false : true
         terraform_plan_file = "drift.tfplan"
       }],
     ]
