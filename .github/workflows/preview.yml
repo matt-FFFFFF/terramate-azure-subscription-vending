@@ -70,7 +70,9 @@ jobs:
             --parallel 1 \
             init
         env:
-          GITHUB_TOKEN: ${{ github.token }}
+          GITHUB_TOKEN: ${{ secrets.GH_PAT }}
+          ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
+          ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
 
       - name: Plan Terraform changes in changed stacks
         if: steps.list-changed.outputs.stdout
@@ -84,3 +86,5 @@ jobs:
             preview
         env:
           GITHUB_TOKEN: ${{ secrets.GH_PAT }}
+          ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
+          ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
