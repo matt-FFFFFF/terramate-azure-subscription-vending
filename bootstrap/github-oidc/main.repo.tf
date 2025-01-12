@@ -1,11 +1,15 @@
 resource "github_repository" "this" {
-  name                 = var.repository_name
-  visibility           = "public"
-  has_downloads        = true
-  has_wiki             = true
-  has_issues           = true
-  has_projects         = true
-  vulnerability_alerts = true
+  name                        = var.repository_name
+  visibility                  = "public"
+  has_downloads               = true
+  has_wiki                    = true
+  has_issues                  = true
+  has_projects                = true
+  vulnerability_alerts        = true
+  allow_merge_commit          = false
+  merge_commit_message        = "PR_TITLE"
+  squash_merge_commit_message = "PR_BODY"
+  squash_merge_commit_title   = "PR_TITLE"
 }
 
 resource "github_repository_environment" "prod" {
