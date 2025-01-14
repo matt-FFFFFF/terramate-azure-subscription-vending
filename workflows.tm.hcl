@@ -20,13 +20,24 @@ script "init" {
   }
 }
 
-script "init-migrate" {
+script "init" "migrate" {
   name        = "Terraform Init Migrate State"
   description = "used for bootstrapping, migrate state from local to the storage account"
 
   job {
     commands = [
       ["terraform", "init", "-migrate-state", ],
+    ]
+  }
+}
+
+script "init" "no-backend" {
+  name        = "Terraform Init Migrate State"
+  description = "used for bootstrapping, migrate state from local to the storage account"
+
+  job {
+    commands = [
+      ["terraform", "init", "-backend=false", ],
     ]
   }
 }
